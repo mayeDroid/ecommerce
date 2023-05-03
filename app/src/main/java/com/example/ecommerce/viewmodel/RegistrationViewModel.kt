@@ -93,4 +93,3 @@ class RegistrationViewModel @Inject constructor(
     }
 }
 
-//Test

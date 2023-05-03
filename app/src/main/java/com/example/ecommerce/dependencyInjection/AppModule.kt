@@ -21,5 +21,5 @@ object AppModule {
     fun provideFirebaseAuthentication() = FirebaseAuth.getInstance()
     @Provides
     @Singleton
-    fun provideFirebasFireStoreDatabase() = Firebase.firestore
+    fun provideFirebaseFireStoreDatabase() = Firebase.firestore
 }
