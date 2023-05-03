@@ -23,11 +23,6 @@ class LoginViewModel @Inject constructor
         MutableSharedFlow<Resource<FirebaseUser>>()  //we want to send a one time event
     // so when ever login is successful then we will navigate to the another activity or snack-bar
 
-    //private val _registerStateFlows = MutableStateFlow<Resource<User>>(Resource.Unspecified())
-    // to observe the flows from loading, successful to failure,
-    // check the Resource class in utilities folder
-
-    //val registerStateFlows: Flow<Resource<User>> = _registerStateFlows
 
     private val _validation = Channel<LoginFieldState>() {}
     val validation = _validation.receiveAsFlow()

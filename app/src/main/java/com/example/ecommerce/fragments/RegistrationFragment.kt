@@ -1,6 +1,7 @@
 package com.example.ecommerce.fragments
 
 import android.content.ContentValues.TAG
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,6 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.ecommerce.R
+import com.example.ecommerce.activities.ShoppingActivity
 import com.example.ecommerce.databinding.FragmentRegisterBinding
 import com.example.ecommerce.dataclasses.User
 import com.example.ecommerce.utilities.RegistrationValidation
@@ -64,9 +66,9 @@ class RegistrationFragment: Fragment(R.layout.fragment_register) {
                     }
                     is Resource.Success -> {
                        Toast.makeText(requireContext(), "Account created", Toast.LENGTH_SHORT ).show()
-
                         Log.d("test", it.data.toString())
                         binding.buttonRegisterRegisterFragment.revertAnimation()   //to stop animation if successful
+                        binding.buttonRegisterRegisterFragment.findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
 
                     }
 
