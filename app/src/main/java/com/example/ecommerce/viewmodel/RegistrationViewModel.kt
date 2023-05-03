@@ -92,3 +92,5 @@ class RegistrationViewModel @Inject constructor(
         return shouldRegister
     }
 }
+
+//Test
