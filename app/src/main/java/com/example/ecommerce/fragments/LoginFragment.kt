@@ -14,10 +14,13 @@ import androidx.navigation.fragment.findNavController
 import com.example.ecommerce.R
 import com.example.ecommerce.activities.ShoppingActivity
 import com.example.ecommerce.databinding.FragmentLoginBinding
+import com.example.ecommerce.utilities.RegistrationValidation
 import com.example.ecommerce.utilities.Resource
 import com.example.ecommerce.viewmodel.LoginViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class LoginFragment: Fragment(R.layout.fragment_login) {
@@ -45,7 +48,9 @@ class LoginFragment: Fragment(R.layout.fragment_login) {
             buttonLoginLoginFragment.setOnClickListener {
                 val email = editTextEmailLogin.text.toString().trim()
                 val password = editTextPasswordLogin.text.toString()
-                viewModel.login(email, password)
+               // viewModel.login(email, password)
+
+                viewModel.loginWithEmailWithPassword(email, password)
             }
         }
 
@@ -69,11 +74,34 @@ class LoginFragment: Fragment(R.layout.fragment_login) {
                     is Resource.Error -> {
                         Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
                         binding.buttonLoginLoginFragment.revertAnimation()
-
                     }
 
                     else -> Unit
                 }
+            }
+        }
+
+        lifecycleScope.launchWhenStarted {
+            viewModel.validation.collect{
+                    validation ->
+                if (validation.emailValidation is RegistrationValidation.Failed){
+                    withContext(Dispatchers.Main){
+                        binding.editTextEmailLogin.apply {
+                            requestFocus()
+                            error = validation.emailValidation.message
+                        }
+                    }
+                }
+
+                if (validation.passwordValidation is RegistrationValidation.Failed){
+                    withContext(Dispatchers.Main){
+                        binding.editTextPasswordLogin.apply {
+                            requestFocus()
+                            error = validation.passwordValidation.message
+                        }
+                    }
+                }
+
             }
         }
     }

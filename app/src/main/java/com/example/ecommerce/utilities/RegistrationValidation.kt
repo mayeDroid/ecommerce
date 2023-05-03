@@ -12,3 +12,8 @@ data class RegistrationFieldState(      // ie the editText fields we need to che
     val firstNameValidation: RegistrationValidation,
     val lastNameValidation: RegistrationValidation
 )
+
+data class LoginFieldState(
+    val emailValidation: RegistrationValidation,
+    val passwordValidation: RegistrationValidation,
+)
