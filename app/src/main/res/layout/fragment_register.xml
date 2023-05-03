@@ -117,7 +117,7 @@
             android:hint="@string/password"/>
 
         <br.com.simplepass.loadingbutton.customViews.CircularProgressButton
-            android:id="@+id/buttonRegisterLoginRegister"
+            android:id="@+id/buttonRegisterRegisterFragment"
             android:layout_width="0dp"
             android:layout_height="@dimen/mediumButtonHeight"
             style="@style/blueButtonStyle"
@@ -125,6 +125,7 @@
             app:layout_constraintStart_toStartOf="@id/guideVerticalLeft"
             app:layout_constraintEnd_toEndOf="@id/guideVerticalRight"
             android:layout_marginTop="15dp"
+            app:spinning_bar_width="5dp"
             app:spinning_bar_color="@color/white"
             android:text="@string/register"/>
 
@@ -134,7 +135,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             app:layout_constraintStart_toStartOf="@id/guideVerticalLeft"
-            app:layout_constraintTop_toBottomOf="@id/buttonRegisterLoginRegister"
+            app:layout_constraintTop_toBottomOf="@id/buttonRegisterRegisterFragment"
             android:src="@drawable/facebook_login"/>
 
         <TextView
@@ -153,7 +154,7 @@
             android:layout_marginTop="15dp"
             android:src="@drawable/google_login"
             app:layout_constraintEnd_toEndOf="@id/guideVerticalRight"
-            app:layout_constraintTop_toBottomOf="@id/buttonRegisterLoginRegister"/>
+            app:layout_constraintTop_toBottomOf="@id/buttonRegisterRegisterFragment"/>
 
 
         <TextView

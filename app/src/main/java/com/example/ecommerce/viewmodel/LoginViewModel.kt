@@ -24,8 +24,11 @@ class LoginViewModel @Inject constructor
     val login = _login.asSharedFlow()   //this will convert the mutable to immutable shared flow
 
     fun login(email: String, password: String){
-        firebaseAuth.signInWithEmailAndPassword(email,password)
+        viewModelScope.launch {
+            _login.emit(Resource.Loading())
+        }
 
+        firebaseAuth.signInWithEmailAndPassword(email,password)
             .addOnSuccessListener {
                 viewModelScope.launch {
                 it.user?.let {

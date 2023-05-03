@@ -10,16 +10,16 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.example.ecommerce.R
 import com.example.ecommerce.databinding.FragmentRegisterBinding
 import com.example.ecommerce.dataclasses.User
 import com.example.ecommerce.utilities.RegistrationValidation
 import com.example.ecommerce.utilities.Resource
-import com.example.ecommerce.utilities.validateEmail
 import com.example.ecommerce.viewmodel.RegistrationViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.withContext
 
 private val TAG = "RegistrationFragment"
@@ -41,8 +41,12 @@ class RegistrationFragment: Fragment(R.layout.fragment_register) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.tvDoYouHaveAnAccount.setOnClickListener {
+            findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
+        }
+
         binding.apply {
-            buttonRegisterLoginRegister.setOnClickListener {
+            buttonRegisterRegisterFragment.setOnClickListener {
                val user = User(
                    editTextFirstName.text.toString().trim(),
                    editTextLastName.text.toString().trim(),
@@ -56,19 +60,20 @@ class RegistrationFragment: Fragment(R.layout.fragment_register) {
             viewModel.registerStateFlows.collect{
                 when(it){
                     is Resource.Loading -> {
-                        binding.buttonRegisterLoginRegister.startAnimation()
+                        binding.buttonRegisterRegisterFragment.startAnimation()
                     }
                     is Resource.Success -> {
-                       // Toast.makeText(activity?.applicationContext, "Account created", Toast.LENGTH_SHORT ).show()
+                       Toast.makeText(requireContext(), "Account created", Toast.LENGTH_SHORT ).show()
 
                         Log.d("test", it.data.toString())
-                        binding.buttonRegisterLoginRegister.revertAnimation()   //to stop animation if successful
+                        binding.buttonRegisterRegisterFragment.revertAnimation()   //to stop animation if successful
+
                     }
 
                     is Resource.Error -> {
                         Log.e(TAG, it.message.toString())
                         Toast.makeText(activity?.applicationContext, it.message.toString(), Toast.LENGTH_SHORT).show()
-                        binding.buttonRegisterLoginRegister.revertAnimation()
+                        binding.buttonRegisterRegisterFragment.revertAnimation()
                     }
 
                     else -> Unit

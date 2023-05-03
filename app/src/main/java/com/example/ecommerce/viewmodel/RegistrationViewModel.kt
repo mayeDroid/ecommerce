@@ -1,5 +1,6 @@
 package com.example.ecommerce.viewmodel
 
+import android.text.TextWatcher
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -91,5 +92,6 @@ class RegistrationViewModel @Inject constructor(
 
         return shouldRegister
     }
+
 }
 
