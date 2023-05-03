@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Ecommerce</string>
+    <string name="rightAddress">The best choice for\n your gadgets</string>
+    <string name="quality">We bring quality\ngadgets to your door steps\nwith safe delivery</string>
+    <string name="start">Start</string>
+    <string name="register">Register</string>
+    <string name="login">Login</string>
+    <string name="pleaseLogin">Please Login</string>
+    <string name="dontHaveAnAccount">Don\'t have an account? Register</string>
+    <string name="maye_gadgets">Maye Gadgets</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="facebook">Facebook</string>
+    <string name="google">Google</string>
+    <string name="let_s_register">Let\'s register</string>
+    <string name="do_you_have_an_account_log_in">Do you have an account? Log in</string>
+    <string name="first_name">First name</string>
+    <string name="last_name">Last name</string>
+</resources>
