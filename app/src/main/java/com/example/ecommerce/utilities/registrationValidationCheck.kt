@@ -47,6 +47,7 @@ fun validateLastName(lastName: String): RegistrationValidation {
     return RegistrationValidation.Success
 }
 
+
 /*if (firstName.contains("1", false))
     return RegistrationValidation.Failed("First name cannot contain a number")*/
 
