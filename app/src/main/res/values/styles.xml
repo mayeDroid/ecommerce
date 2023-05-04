@@ -43,6 +43,15 @@
         <item name="android:fontFamily">@font/poppins_light</item>
     </style>
 
+    <style name="editTextPasswordReset">
+        <item name="android:background">@drawable/white_background</item>
+        <item name="android:gravity">center</item>
+        <item name="singleLine">true</item>
+        <item name="lineHeight">@dimen/editTextHeightResetPassword</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily">@font/poppins_light</item>
+    </style>
+
 
     <dimen name="h4TextSize">35sp</dimen>
     <dimen name="h2TextSize">17sp</dimen>

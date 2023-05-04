@@ -17,4 +17,8 @@
     <string name="do_you_have_an_account_log_in">Do you have an account? Log in</string>
     <string name="first_name">First name</string>
     <string name="last_name">Last name</string>
+    <string name="reset_password">Reset password</string>
+    <string name="password_reset_link">The password reset link will be sent to your registered email</string>
+    <string name="send">Send</string>
+    <string name="cancel">Cancel</string>
 </resources>
