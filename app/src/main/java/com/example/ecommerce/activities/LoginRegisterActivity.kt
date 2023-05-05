@@ -10,5 +10,6 @@ class LoginRegisterActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login_register)
+        //The login register layout is host to the fragments for navigation activity
     }
 }

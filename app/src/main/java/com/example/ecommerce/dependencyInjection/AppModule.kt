@@ -1,5 +1,8 @@
 package com.example.ecommerce.dependencyInjection
 
+import android.app.Application
+import android.content.Context.MODE_PRIVATE
+import com.example.ecommerce.utilities.Constants.INTRODUCTION_SHARED_PREFERENCES
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -22,4 +25,9 @@ object AppModule {
     @Provides
     @Singleton
     fun provideFirebaseFireStoreDatabase() = Firebase.firestore
+
+    @Provides
+    fun provideIntroductionSharedPreferencesToHideIntroActivity(    // This will help hide Introduction fragment permanently after registration
+        application: Application
+    ) = application.getSharedPreferences(INTRODUCTION_SHARED_PREFERENCES, MODE_PRIVATE)
 }

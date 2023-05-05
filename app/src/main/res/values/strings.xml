@@ -21,4 +21,8 @@
     <string name="password_reset_link">The password reset link will be sent to your registered email</string>
     <string name="send">Send</string>
     <string name="cancel">Cancel</string>
+    <string name="search">Search</string>
+    <string name="home">Home</string>
+    <string name="profile">Profile</string>
+    <string name="cart">Cart</string>
 </resources>

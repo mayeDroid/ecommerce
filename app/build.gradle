@@ -55,6 +55,10 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
     implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.8.0"))
 
+    def nav_version = "2.5.3"
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+
     //for loading button
     implementation 'br.com.simplepass:loading-button-android:2.2.0'
 

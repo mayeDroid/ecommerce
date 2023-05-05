@@ -1,14 +1,10 @@
 package com.example.ecommerce.viewmodel
 
-import android.text.TextWatcher
-import android.widget.Toast
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.ecommerce.dataclasses.User
 import com.example.ecommerce.utilities.*
-import com.example.ecommerce.utilities.Constants.USER_COLLECTION
+import com.example.ecommerce.utilities.Constants.USER_COLLECTION_IN_FIRESTORE
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -17,7 +13,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
-
 @HiltViewModel
 class RegistrationViewModel @Inject constructor(
     private val firebaseAuth: FirebaseAuth,
@@ -67,7 +62,7 @@ class RegistrationViewModel @Inject constructor(
 
     // a function to save user info if successful in the firebase/store
     private fun saveUserInfo(userUniqueID: String, user: User) {
-        databaseFirestore.collection(USER_COLLECTION)    // because of this we create a class "Constants" in utilities where we save all the collection of users
+        databaseFirestore.collection(USER_COLLECTION_IN_FIRESTORE)    // because of this we create a class "Constants" in utilities where we save all the collection of users
             .document(userUniqueID)
             .set(user)
             .addOnSuccessListener {
