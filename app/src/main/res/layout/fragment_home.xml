@@ -74,8 +74,8 @@
 
     </LinearLayout>
 
-    <TableLayout
-        android:id="@+id/tableLayout"
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:tabRippleColor="@color/white"
@@ -84,6 +84,8 @@
         app:tabTextAppearance="@style/tabLayout_text"
         app:layout_constraintTop_toBottomOf="@id/homeHeader"
         app:layout_constraintStart_toStartOf="parent"
+        app:tabIndicator="@null"
+        app:tabIndicatorColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="5dp"/>
     
@@ -93,7 +95,7 @@
         android:layout_height="0dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/tableLayout"
+        app:layout_constraintBottom_toTopOf="@+id/tabLayout"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
 
