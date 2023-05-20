@@ -13,7 +13,7 @@ import com.example.ecommerce.databinding.FragmentHomeBinding
 import com.example.ecommerce.fragments.categories.*
 import com.google.android.material.tabs.TabLayoutMediator
 
-class HomeFragment: Fragment(R.layout.fragment_home) {
+class HomeFragment : Fragment(R.layout.fragment_home) {
     private lateinit var binding: FragmentHomeBinding
 
     override fun onCreateView(
@@ -28,7 +28,8 @@ class HomeFragment: Fragment(R.layout.fragment_home) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val categoriesFragmentList = arrayListOf<Fragment>(   //to get the categories list of fragments
+        val categoriesFragmentList = arrayListOf<Fragment>(
+            //to get the categories list of fragments
             MainOrHomeCategoryFragment(),
             ChairsFragment(),
             CupboardFragment(),
@@ -36,13 +37,13 @@ class HomeFragment: Fragment(R.layout.fragment_home) {
             AccessoriesFragment(),
             FurnitureFragment(),
 
-        )
+            )
 
-        val viewPagerToAdapter = HomeViewPagerAdapter(categoriesFragmentList, childFragmentManager, lifecycle)
+        val viewPagerToAdapter =
+            HomeViewPagerAdapter(categoriesFragmentList, childFragmentManager, lifecycle)
         binding.viewPagerHomeFragment.adapter = viewPagerToAdapter
-        TabLayoutMediator(binding.tabLayout, binding.viewPagerHomeFragment){
-            tab, position ->
-            when (position){
+        TabLayoutMediator(binding.tabLayout, binding.viewPagerHomeFragment) { tab, position ->
+            when (position) {
                 0 -> tab.text = "Main"
                 1 -> tab.text = "Chair"
                 2 -> tab.text = "Cupboard"
