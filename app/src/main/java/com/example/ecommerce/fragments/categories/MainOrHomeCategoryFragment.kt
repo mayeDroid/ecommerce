@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -54,6 +55,7 @@ class MainOrHomeCategoryFragment: Fragment(R.layout.fragment_main_or_home_catego
                     }
                     is Resource.Success -> {
                         specialProductsAdapter.differ.submitList(it.data)
+                        hideLoading()
                     }
                     is Resource.Error -> {
                         hideLoading()
@@ -73,6 +75,7 @@ class MainOrHomeCategoryFragment: Fragment(R.layout.fragment_main_or_home_catego
                     }
                     is Resource.Success -> {
                         bestDealsAdapter.differ.submitList(it.data)
+                        hideLoading()
                     }
                     is Resource.Error -> {
                         hideLoading()
@@ -88,20 +91,29 @@ class MainOrHomeCategoryFragment: Fragment(R.layout.fragment_main_or_home_catego
             viewModel.bestProductsState.collectLatest {
                 when(it){
                     is Resource.Loading -> {
-                        showLoading()
+                        binding.bestProductsProgressBar.visibility = View.VISIBLE
                     }
                     is Resource.Success -> {
                         bestProductAdapter.differ.submitList(it.data)
+                        binding.bestProductsProgressBar.visibility = View.GONE
                     }
                     is Resource.Error -> {
-                        hideLoading()
                         Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
                         Log.e(TAG,it.message.toString())
+                        binding.bestProductsProgressBar.visibility = View.GONE
                     }
                     else -> Unit
                 }
             }
         }
+
+        // this enables us to fetch more products after using limits on fetchBestProducts()
+        binding.nestedScrollMainOrHomeCategory.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener{
+            view,_,scrollY,_,_ ->
+            if (view.getChildAt(0).bottom <= view.height + scrollY){
+                viewModel.fetchBestProducts()
+            }
+        })
 
     }
 

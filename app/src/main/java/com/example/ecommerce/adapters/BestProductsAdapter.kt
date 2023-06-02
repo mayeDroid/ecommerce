@@ -21,16 +21,14 @@ class BestProductsAdapter: RecyclerView.Adapter<BestProductsAdapter.BestProducts
                    Glide.with(itemView).load(product.images[0]).into(imgViewPo)
                    //Picasso.get().load(product.images[0]).into(imgViewPo)
                     product.offerPercentage?.let {
-                        val remPercentage = 1f - it
-                        val priceAfterOffer = remPercentage * product.price!!
-                        tvProductNewPrice.text = "₦ ${String.format("%.2f", priceAfterOffer)}"
+                        val percentageOff = (100 - product.offerPercentage) * product.price!!/100
+                        tvProductNewPrice.text = "₦ ${String.format("%.2f", percentageOff)}"
                         tvProductPrice.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
                     }
 
                 if (product.offerPercentage == null) tvProductNewPrice.visibility = View.GONE
                 tvProductPrice.text = "₦ ${product.price}"
                 tvProductName.text = product.name
-                tvProductPrice.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
             }
         }
     }

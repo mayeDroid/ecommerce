@@ -1,5 +1,6 @@
 package com.example.ecommerce.adapters
 
+import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
@@ -18,10 +19,11 @@ class BestDealsAdapter : RecyclerView.Adapter<BestDealsAdapter.BestDealsViewHold
             binding.apply {
                 Glide.with(itemView).load(product.images[0]).into(imageViewBestDeal)
                 product.offerPercentage?.let {
-                    val remainingPricePercentage = 1f - it
+                    val percentageOff = (100 - product.offerPercentage) * product.price!!/100
+                   /* val remainingPricePercentage = 1f - it
                     val priceAfterOffer = remainingPricePercentage * product.price!!
-                    //tvNewPrice.text = "₦ ${priceAfterOffer}"
-                    tvDealNewPrice.text = "₦ ${String.format("%.2f", priceAfterOffer)}"     // to get 2 digits from the decimal
+                    //tvNewPrice.text = "₦ ${priceAfterOffer}"*/
+                    tvDealNewPrice.text = "₦ ${String.format("%.2f", percentageOff)}" // to get 2 digits from the decimal
                 }
                 tvDealOldPrice.text = "₦ ${product.price}"
                 tvDealProductName.text = product.name
