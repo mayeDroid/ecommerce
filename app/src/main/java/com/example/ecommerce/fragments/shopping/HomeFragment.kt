@@ -39,6 +39,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
             )
 
+        binding.viewPagerHomeFragment.isUserInputEnabled = false    // helps cancels the swipe behaviour in the view pager
+
         val viewPagerToAdapter =
             HomeViewPagerAdapter(categoriesFragmentList, childFragmentManager, lifecycle)
         binding.viewPagerHomeFragment.adapter = viewPagerToAdapter

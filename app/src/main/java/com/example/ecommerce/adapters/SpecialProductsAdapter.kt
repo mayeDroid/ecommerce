@@ -17,8 +17,9 @@ class SpecialProductsAdapter :
                 binding.apply {
                     Glide.with(itemView).load(product.images[0]).into(imageSpecialRVItem)
                     tvSpecialProductsName.text = product.name
-                    tvSpecialProductsPrice.text = product.price.toString()
+                    tvSpecialProductsPrice.text = "₦${product.price.toString()}"
                 }
+
             }
         }
 

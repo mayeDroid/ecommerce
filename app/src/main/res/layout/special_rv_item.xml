@@ -25,14 +25,14 @@
 
         <TextView
             android:id="@+id/tvSpecialProductsName"
-            android:layout_width="80dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:text="Scotch Premium"
             app:layout_constraintStart_toEndOf="@id/imageSpecialRVItem"
             app:layout_constraintTop_toTopOf="@id/imageSpecialRVItem"
             android:layout_marginTop="7dp"
             android:layout_marginStart="18dp"
-            android:maxLines="2"
+            android:maxLines="4"
             android:fontFamily="@font/poppins_thin"
             android:textStyle="bold"
             android:textColor="@color/black"
