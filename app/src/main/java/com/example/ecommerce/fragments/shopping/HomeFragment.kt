@@ -36,7 +36,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             TableFragment(),
             AccessoriesFragment(),
             FurnitureFragment(),
-
             )
 
         binding.viewPagerHomeFragment.isUserInputEnabled = false    // helps cancels the swipe behaviour in the view pager
