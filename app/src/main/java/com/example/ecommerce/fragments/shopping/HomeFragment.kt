@@ -31,11 +31,11 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         val categoriesFragmentList = arrayListOf<Fragment>(
             //to get the categories list of fragments
             MainOrHomeCategoryFragment(),
-            ChairsFragment(),
-            CupboardFragment(),
-            TableFragment(),
+            MobilePhonesFragment(),
+            LaptopsOrComputersFragment(),
+            ConsoleAndGamesFragment(),
+            SmartWatchesFragment(),
             AccessoriesFragment(),
-            FurnitureFragment(),
             )
 
         binding.viewPagerHomeFragment.isUserInputEnabled = false    // helps cancels the swipe behaviour in the view pager
@@ -45,12 +45,12 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         binding.viewPagerHomeFragment.adapter = viewPagerToAdapter
         TabLayoutMediator(binding.tabLayout, binding.viewPagerHomeFragment) { tab, position ->
             when (position) {
-                0 -> tab.text = "Main"
-                1 -> tab.text = "Chair"
-                2 -> tab.text = "Cupboard"
-                3 -> tab.text = "Table"
-                4 -> tab.text = "Accessories"
-                5 -> tab.text = "Furniture"
+                0 -> tab.text = "Home"
+                1 -> tab.text = "Mobile Phones"
+                2 -> tab.text = "Laptops and Computers"
+                3 -> tab.text = "Consoles and Games"
+                4 -> tab.text = "Smart watches"
+                5 -> tab.text = "Accessories"
             }
         }.attach()
     }

@@ -1,4 +1,4 @@
 package com.example.ecommerce.fragments.categories
 
-class FurnitureFragment: BaseCategoryFragment() {
+class SmartWatchesFragment: BaseCategoryFragment() {
 }
