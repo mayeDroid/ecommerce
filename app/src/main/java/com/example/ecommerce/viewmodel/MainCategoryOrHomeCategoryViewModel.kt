@@ -37,7 +37,7 @@ class MainCategoryOrHomeCategoryViewModel @Inject constructor(private var firest
         fetchBestProducts()
     }
 
-    private fun fetchSpecialProductsFromFireStore() {
+    fun fetchSpecialProductsFromFireStore() {
         viewModelScope.launch {
             _specialProductsState.emit(Resource.Loading())
         }
@@ -56,7 +56,7 @@ class MainCategoryOrHomeCategoryViewModel @Inject constructor(private var firest
             }
     }
 
-    private fun fetchBestDeals() {
+    fun fetchBestDeals() {
         viewModelScope.launch {
             _bestDealsState.emit(Resource.Loading())
         }
