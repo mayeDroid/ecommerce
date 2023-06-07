@@ -39,7 +39,7 @@ class ChooseSizeOfItem : RecyclerView.Adapter<ChooseSizeOfItem.ChooseSizeOfItemV
         }
     }
 
-    private val differ = AsyncListDiffer(this, diffCallback)
+    val differ = AsyncListDiffer(this, diffCallback)
 
     override fun onCreateViewHolder(
         parent: ViewGroup,

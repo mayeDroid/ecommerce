@@ -10,6 +10,7 @@ import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ecommerce.R
@@ -18,6 +19,7 @@ import com.example.ecommerce.adapters.BestProductsAdapter
 import com.example.ecommerce.adapters.SpecialProductsAdapter
 import com.example.ecommerce.databinding.FragmentMainOrHomeCategoryBinding
 import com.example.ecommerce.utilities.Resource
+import com.example.ecommerce.utilities.showBottomNavView
 import com.example.ecommerce.viewmodel.MainCategoryOrHomeCategoryViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -46,6 +48,22 @@ class MainOrHomeCategoryFragment: Fragment(R.layout.fragment_main_or_home_catego
         specialProductsRV()
         setUpBestDealsRecyclerView()
         setUpBestProductsRecyclerView()
+
+        // clicking a picture or click listener
+        specialProductsAdapter.onClick = {
+            val bundle = Bundle().apply { putParcelable("products", it) }
+            findNavController().navigate(R.id.action_homeFragment_to_productDetailsFragment, bundle)
+        }
+
+        bestDealsAdapter.onClick = {
+            val bundle = Bundle().apply { putParcelable("products", it) }
+            findNavController().navigate(R.id.action_homeFragment_to_productDetailsFragment, bundle)
+        }
+
+        bestProductAdapter.onClick = {
+            val bundle = Bundle().apply { putParcelable("products", it) }
+            findNavController().navigate(R.id.action_homeFragment_to_productDetailsFragment, bundle)
+        }
 
         lifecycleScope.launchWhenStarted {
             viewModel.specialProductsState.collectLatest {
@@ -150,6 +168,12 @@ class MainOrHomeCategoryFragment: Fragment(R.layout.fragment_main_or_home_catego
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             adapter = bestDealsAdapter
         }
+    }
+
+    // when we hide the bottomNav on the productDetails the bottomNav is hidden when we return so this helps fix it
+    override fun onResume() {
+        super.onResume()
+        showBottomNavView()
     }
 
 }

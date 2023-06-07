@@ -31,8 +31,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         val categoriesFragmentList = arrayListOf<Fragment>(
             //to get the categories list of fragments
             MainOrHomeCategoryFragment(),
-            MobilePhonesFragment(),
-            LaptopsOrComputersFragment(),
+            SamsungFragment(),
+            IphoneFragment(),
             ConsoleAndGamesFragment(),
             SmartWatchesFragment(),
             AccessoriesFragment(),
@@ -46,8 +46,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         TabLayoutMediator(binding.tabLayout, binding.viewPagerHomeFragment) { tab, position ->
             when (position) {
                 0 -> tab.text = "Home"
-                1 -> tab.text = "Mobile Phones"
-                2 -> tab.text = "Laptops and Computers"
+                1 -> tab.text = "Samsung"
+                2 -> tab.text = "Iphone"
                 3 -> tab.text = "Consoles and Games"
                 4 -> tab.text = "Smart watches"
                 5 -> tab.text = "Accessories"

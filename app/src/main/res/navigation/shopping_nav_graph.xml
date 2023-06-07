@@ -9,20 +9,41 @@
         android:id="@+id/cartFragment"
         tools:layout="@layout/fragment_cart"
         android:name="com.example.ecommerce.fragments.shopping.CartFragment"
-        android:label="CartFragment" />
+        android:label="CartFragment" >
+        <action
+            android:id="@+id/action_cartFragment_to_productDetailsFragment"
+            app:destination="@id/productDetailsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/homeFragment"
         tools:layout="@layout/fragment_home"
         android:name="com.example.ecommerce.fragments.shopping.HomeFragment"
-        android:label="HomeFragment" />
+        android:label="HomeFragment" >
+        <action
+            android:id="@+id/action_homeFragment_to_productDetailsFragment"
+            app:destination="@id/productDetailsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/searchFragment"
         tools:layout="@layout/fragment_search"
         android:name="com.example.ecommerce.fragments.shopping.SearchFragment"
-        android:label="SearchFragment" />
+        android:label="SearchFragment" >
+        <action
+            android:id="@+id/action_searchFragment_to_productDetailsFragment"
+            app:destination="@id/productDetailsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/profileFragment"
         tools:layout="@layout/fragment_profile"
         android:name="com.example.ecommerce.fragments.shopping.ProfileFragment"
         android:label="ProfileFragment" />
+    <fragment
+        android:id="@+id/productDetailsFragment"
+        tools:layout="@layout/fragment_product_details"
+        android:name="com.example.ecommerce.fragments.shopping.ProductDetailsFragment"
+        android:label="ProductDetailsFragment" >
+        <argument
+            android:name="products"
+            app:argType="com.example.ecommerce.dataclasses.Product" />
+    </fragment>
 </navigation>

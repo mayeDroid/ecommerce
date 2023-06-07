@@ -43,7 +43,7 @@ class ChooseColorOfItem: RecyclerView.Adapter<ChooseColorOfItem.ChooseColorOfIte
         }
     }
 
-    private val differ = AsyncListDiffer(this, diffCallback)
+    val differ = AsyncListDiffer(this, diffCallback)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChooseColorOfItemViewHolder {
         return ChooseColorOfItemViewHolder(RvChooseColorOfItemBinding.inflate(LayoutInflater.from(parent.context)))
