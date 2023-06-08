@@ -6,7 +6,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.ecommerce.dataclasses.Category
 import com.example.ecommerce.utilities.Resource
-import com.example.ecommerce.viewmodel.ViewModelCategoryMobilePhonesLaptopsConsolesAccessories
+import com.example.ecommerce.viewmodel.ViewModelCategorySamsungIphoneAndOthers
 import com.example.ecommerce.viewmodel.factory.BaseCategoryViewModelFactory
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.firestore.FirebaseFirestore
@@ -19,7 +19,7 @@ class SamsungFragment: BaseCategoryFragment() {
     @Inject
     lateinit var firestore: FirebaseFirestore
 
-    val viewModel by viewModels<ViewModelCategoryMobilePhonesLaptopsConsolesAccessories> {BaseCategoryViewModelFactory(firestore, Category.MobilePhones)  }
+    val viewModel by viewModels<ViewModelCategorySamsungIphoneAndOthers> {BaseCategoryViewModelFactory(firestore, Category.MobilePhones)  }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

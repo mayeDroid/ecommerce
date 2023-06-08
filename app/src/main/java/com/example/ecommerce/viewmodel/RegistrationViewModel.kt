@@ -37,7 +37,7 @@ class RegistrationViewModel @Inject constructor(
             firebaseAuth.createUserWithEmailAndPassword(user.email, password)
                 //to create a new user account with firebase
 
-                .addOnSuccessListener { // a response to know if the registration was successful
+                .addOnSuccessListener { it -> // a response to know if the registration was successful
                     it.user?.let {
                         //_registerStateFlows.value = Resource.Success(it)
 

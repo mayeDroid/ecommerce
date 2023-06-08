@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class ViewModelCategoryMobilePhonesLaptopsConsolesAccessories constructor
+class ViewModelCategorySamsungIphoneAndOthers constructor
     (
     private val firestore: FirebaseFirestore,
     private val category: Category
