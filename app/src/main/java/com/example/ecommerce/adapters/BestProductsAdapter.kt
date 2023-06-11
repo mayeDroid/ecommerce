@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bumptech.glide.Glide
 import com.example.ecommerce.databinding.ProductRvItemBinding
 import com.example.ecommerce.dataclasses.Product
+import com.example.ecommerce.helperclasses.getProductPriceAfterPercentage
 import com.squareup.picasso.Picasso
 
 class BestProductsAdapter: RecyclerView.Adapter<BestProductsAdapter.BestProductsViewHolder>(){
@@ -21,7 +22,8 @@ class BestProductsAdapter: RecyclerView.Adapter<BestProductsAdapter.BestProducts
                    Glide.with(itemView).load(product.images[0]).into(imgViewPo)
                    //Picasso.get().load(product.images[0]).into(imgViewPo)
                     product.offerPercentage?.let {
-                        val percentageOff = (100 - product.offerPercentage) * product.price!!/100
+                        //val percentageOff = (100 - product.offerPercentage) * product.price!!/100
+                        val percentageOff = product.offerPercentage.getProductPriceAfterPercentage(product.price!!)
                         tvProductNewPrice.text = "₦ ${String.format("%.2f", percentageOff)}"
                         tvProductPrice.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
                     }

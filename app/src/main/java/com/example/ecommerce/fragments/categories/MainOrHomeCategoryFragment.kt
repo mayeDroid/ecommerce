@@ -49,6 +49,7 @@ class MainOrHomeCategoryFragment: Fragment(R.layout.fragment_main_or_home_catego
         setUpBestDealsRecyclerView()
         setUpBestProductsRecyclerView()
 
+
         // clicking a picture or click listener
         specialProductsAdapter.onClick = {
             val bundle = Bundle().apply { putParcelable("products", it) }

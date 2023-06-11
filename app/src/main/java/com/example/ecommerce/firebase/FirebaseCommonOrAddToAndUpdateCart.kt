@@ -41,4 +41,31 @@ class FirebaseCommonOrAddToAndUpdateCart(
                 onResult(null, it)
         }
     }
+
+
+    fun decreaseQuantity(documentID: String, onResult: (String?, Exception?) -> Unit){
+        firestore.runTransaction { // run transaction to read and write while run batch just to read data
+                transaction ->
+            val documentRef = cartCollection.document(documentID)
+            val document = transaction.get(documentRef)
+            val productObject = document.toObject(CartProducts::class.java)
+            productObject?.let {
+                    cartProducts ->
+                var newQuantity = cartProducts.quantity - 1
+                val newProductObject = cartProducts.copy(quantity = newQuantity)
+                transaction.set(documentRef, newProductObject)
+            }
+        }
+            .addOnSuccessListener {
+                onResult(documentID, null)
+            }
+            .addOnFailureListener {
+                onResult(null, it)
+            }
+    }
+
+    //helps us distinguish bw increase and decrease functions
+   enum class QuantityChanging {
+       INCREASE, DECREASE
+   }
 }
