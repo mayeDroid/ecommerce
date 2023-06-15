@@ -3,20 +3,17 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ecommerce.dataclasses.CartProducts
 import com.example.ecommerce.firebase.FirebaseCommonOrAddToAndUpdateCart
+import com.example.ecommerce.helperclasses.getProductPriceAfterPercentage
 import com.example.ecommerce.utilities.Resource
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.SnapshotMetadata
-import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-
 class CartViewModel @Inject constructor(
     private val firestore: FirebaseFirestore,
     private val auth: FirebaseAuth,
@@ -25,7 +22,35 @@ class CartViewModel @Inject constructor(
     private val _cartProducts = MutableStateFlow<Resource<List<CartProducts>>>(Resource.Unspecified())
     val cartProductsss = _cartProducts.asStateFlow()
 
+    private val _deleteDialogOrIndicatorForDeleteCartItems = MutableSharedFlow<CartProducts>()
+    val deleteDialogOrIndicatorForDeleteCartItems = _deleteDialogOrIndicatorForDeleteCartItems.asSharedFlow()
+
     private var cartProductsDocument = emptyList<DocumentSnapshot>()
+
+    val productsPrice = cartProductsss.map {
+        when (it){
+            is Resource.Success -> {
+                calculatePrice(it.data!!)
+            }
+            else -> null
+        }
+    }
+
+    // to delete the items from the cart
+    fun deleteCartProduct(cartProducts: CartProducts) {
+        val index = cartProductsss.value.data?.indexOf(cartProducts)
+        if (index != null && index != -1){
+            val documentId = cartProductsDocument[index].id
+            firestore.collection("users").document(auth.uid!!).collection("cart").document(documentId).delete()
+        }
+    }
+
+    private fun calculatePrice(data: List<CartProducts>): Float {
+        return data.sumByDouble {
+            cartProducts ->
+            (cartProducts.product.offerPercentage.getProductPriceAfterPercentage(cartProducts.product.price!!) * cartProducts.quantity).toDouble()
+        }.toFloat()
+    }
 
     init {
         getCartProductFromCartCollection()
@@ -50,30 +75,37 @@ class CartViewModel @Inject constructor(
                 }
         }
 
-        fun changeQuantity(cartProducts: CartProducts,
-                           quantityChanging: FirebaseCommonOrAddToAndUpdateCart.QuantityChanging) {
+    }
 
-            val index = cartProductsss.value.data?.indexOf(cartProducts)
-            /**
-             * index could be equal to -1 if the function [getCartProductFromCartCollection] delays (ie the user presses the remove from cart button continuously)
-             * which will also delay the results we expect to be inside the [_cartProducts]
-             */
-            if (index != null && index != -1){
-                val documentId = cartProductsDocument[index].id
-                when(quantityChanging){
-                    FirebaseCommonOrAddToAndUpdateCart.QuantityChanging.INCREASE -> {
-                        increaseQuantity(documentId)
+    fun changeQuantity(cartProducts: CartProducts,
+                       quantityChanging: FirebaseCommonOrAddToAndUpdateCart.QuantityChanging) {
+        val index = cartProductsss.value.data?.indexOf(cartProducts)
+        /**
+         * index could be equal to -1 if the function [getCartProductFromCartCollection] delays (ie the user presses the remove from cart button continuously)
+         * which will also delay the results we expect to be inside the [_cartProducts]
+         */
+        if (index != null && index != -1){
+            val documentId = cartProductsDocument[index].id
+            when(quantityChanging){
+                FirebaseCommonOrAddToAndUpdateCart.QuantityChanging.INCREASE -> {
+                    viewModelScope.launch { _cartProducts.emit(Resource.Loading()) }
+                    increaseQuantity(documentId)
+                }
+                FirebaseCommonOrAddToAndUpdateCart.QuantityChanging.DECREASE -> {
+                    if(cartProducts.quantity == 1) {    // here we want to take care of getting 0 when we use the minus button
+                        viewModelScope.launch {
+                            _deleteDialogOrIndicatorForDeleteCartItems.emit(CartProducts())
+                        }
                     }
-                    FirebaseCommonOrAddToAndUpdateCart.QuantityChanging.DECREASE -> {
-                        decreaseQuantity(documentId)
-                    }
+                    viewModelScope.launch { _cartProducts.emit(Resource.Loading())}
+                    decreaseQuantity(documentId)
                 }
             }
         }
     }
 
     private fun increaseQuantity(documentId: String) {
-        firebaseCommonOrAddToAndUpdateCart.increaseQuantity(documentId){result, exception ->
+        firebaseCommonOrAddToAndUpdateCart.increaseQuantity(documentId){ _, exception ->
             if (exception != null){
                 viewModelScope.launch { _cartProducts.emit(Resource.Error(exception.message.toString())) }
             }
@@ -81,7 +113,7 @@ class CartViewModel @Inject constructor(
     }
 
     private fun decreaseQuantity(documentId: String) {
-        firebaseCommonOrAddToAndUpdateCart.decreaseQuantity(documentId){result, exception ->
+        firebaseCommonOrAddToAndUpdateCart.decreaseQuantity(documentId){ _, exception ->
             if (exception != null){
                 viewModelScope.launch { _cartProducts.emit(Resource.Error(exception.message.toString())) }
             }

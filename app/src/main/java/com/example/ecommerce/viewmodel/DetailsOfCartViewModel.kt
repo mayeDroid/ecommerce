@@ -37,7 +37,7 @@ class DetailsOfCartViewModel @Inject constructor(
                        addNewProductToCart(cartProducts)
                    }
                    else{
-                       val product = it.first().toObject(cartProducts::class.java)
+                       val product = it.first().toObject(CartProducts::class.java)
                        if(product == cartProducts){ // increase a already existing product quantity
                            val documentId = it.first().id
                            increaseQuantityInCart(documentId, cartProducts)
@@ -65,7 +65,7 @@ class DetailsOfCartViewModel @Inject constructor(
 
     private fun increaseQuantityInCart(documentId: String, cartProducts: CartProducts){
         firebaseCommonOrAddToAndUpdateCart.increaseQuantity(documentId){
-            _, errorMessage ->
+                _, errorMessage ->
             viewModelScope.launch {
                 if (errorMessage == null)_addToCart.emit(Resource.Success(cartProducts))
                 else _addToCart.emit(Resource.Error(errorMessage.message.toString()))

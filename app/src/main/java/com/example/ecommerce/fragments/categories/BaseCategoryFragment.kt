@@ -18,7 +18,7 @@ import com.example.ecommerce.databinding.FragmentBaseCategoryBinding
 import com.example.ecommerce.utilities.showBottomNavView
 
 open class BaseCategoryFragment: Fragment(R.layout.fragment_base_category) {
-    private lateinit var binding: FragmentBaseCategoryBinding
+    lateinit var binding: FragmentBaseCategoryBinding
    /* private lateinit var offerAdapter: BestProductsAdapter
     private lateinit var bestProducts: BestProductsAdapter*/
 

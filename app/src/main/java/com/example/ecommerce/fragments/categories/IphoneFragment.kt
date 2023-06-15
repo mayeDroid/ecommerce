@@ -4,8 +4,11 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.ecommerce.dataclasses.Category
 import com.example.ecommerce.utilities.Resource
+import com.example.ecommerce.utilities.VerticalItemDecoration
 import com.example.ecommerce.viewmodel.ViewModelCategorySamsungIphoneAndOthers
 import com.example.ecommerce.viewmodel.factory.BaseCategoryViewModelFactory
 import com.google.android.material.snackbar.Snackbar
@@ -23,7 +26,7 @@ class IphoneFragment : BaseCategoryFragment() {
     val viewModel by viewModels<ViewModelCategorySamsungIphoneAndOthers> {
         BaseCategoryViewModelFactory(
             firestore,
-            Category.LaptopsAndComputers
+            Category.Iphone
         )
     }
 
@@ -81,4 +84,5 @@ class IphoneFragment : BaseCategoryFragment() {
     override fun onOfferPagingRequest() {
         viewModel.fetchOfferProducts()
     }
+
 }

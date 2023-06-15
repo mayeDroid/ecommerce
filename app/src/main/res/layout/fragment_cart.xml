@@ -70,7 +70,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.68"/>
+            app:layout_constraintGuide_percent="0.76" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvCart"
@@ -92,17 +92,18 @@
                 app:layout_constraintTop_toBottomOf="@id/toolBarCart"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
-        
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/tvTotalBoxContainer"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
             android:background="@drawable/total_box_background"
-            app:layout_constraintStart_toStartOf="@id/leftGuideLine"
             app:layout_constraintEnd_toEndOf="@id/rightGuideLine"
-            android:layout_marginTop="50dp"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@id/leftGuideLine"
             app:layout_constraintTop_toBottomOf="@id/bottomGuideLine">
-            
+
             <TextView
                 android:id="@+id/tvTotal"
                 android:layout_width="0dp"
@@ -112,12 +113,11 @@
                 android:layout_marginBottom="15dp"
                 android:fontFamily="@font/sf_pro_display"
                 android:text="Total"
-                android:textSize="15sp"
                 android:textColor="@color/black"
-                app:layout_constraintTop_toTopOf="parent"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent" />
-
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/tvTotalPrice"
@@ -128,30 +128,30 @@
                 android:layout_marginBottom="15dp"
                 android:fontFamily="@font/sf_pro_display"
                 android:text="₦ 234"
-                android:textSize="15sp"
                 android:textColor="@color/black"
-                app:layout_constraintTop_toTopOf="parent"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent" />
-            
+                app:layout_constraintTop_toTopOf="parent" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <br.com.simplepass.loadingbutton.customViews.CircularProgressButton
             android:id="@+id/buttonCheckOut"
+            style="@style/blueButtonStyle"
             android:layout_width="0dp"
             android:layout_height="@dimen/mediumButtonHeight"
-            app:spinning_bar_color="@color/white"
-            app:spinning_bar_width="5dp"
-            app:layout_goneMarginTop="45dp"
-            android:layout_marginBottom="20dp"
-            android:layout_marginTop="10dp"
-            style="@style/blueButtonStyle"
-            app:layout_constraintTop_toBottomOf="@id/tvTotalBoxContainer"
-            app:layout_constraintStart_toStartOf="@id/leftGuideLine"
-            app:layout_constraintEnd_toEndOf="@id/rightGuideLine"
-            android:text="Check out"/>
 
-        
+            android:text="Check out"
+            app:layout_constraintEnd_toEndOf="@id/rightGuideLine"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@id/leftGuideLine"
+            app:layout_constraintTop_toBottomOf="@id/tvTotalBoxContainer"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_goneMarginTop="45dp"
+            app:spinning_bar_color="@color/white"
+            app:spinning_bar_width="5dp" />
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -192,13 +192,7 @@
                 app:layout_constraintStart_toStartOf="@id/imageEmptyBoxTexture"
                 app:layout_constraintEnd_toEndOf="@id/imageEmptyBoxTexture"/>
 
-
-
-
-
-                
         </androidx.constraintlayout.widget.ConstraintLayout>
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
