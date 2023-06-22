@@ -1,5 +1,6 @@
 package com.example.ecommerce.fragments.shopping
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,10 +17,15 @@ import com.example.ecommerce.R
 import com.example.ecommerce.adapters.AddressAdapter
 import com.example.ecommerce.adapters.BillingProductsAdapter
 import com.example.ecommerce.databinding.FragmentBillingBinding
+import com.example.ecommerce.dataclasses.Address
 import com.example.ecommerce.dataclasses.CartProducts
+import com.example.ecommerce.dataclasses.Order
+import com.example.ecommerce.dataclasses.OrderStatus
 import com.example.ecommerce.utilities.HorizontalItemDecoration
 import com.example.ecommerce.utilities.Resource
 import com.example.ecommerce.viewmodel.BillingViewModel
+import com.example.ecommerce.viewmodel.OrderViewModel
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 
@@ -28,10 +34,13 @@ class BillingFragment: Fragment() {
     private lateinit var binding: FragmentBillingBinding
     private val addressAdapter by lazy { AddressAdapter() }
     private val billingProductsAdapter by lazy { BillingProductsAdapter() }
-    private val viewModel by viewModels<BillingViewModel>()
+    private val billingViewModel by viewModels<BillingViewModel>()
     private  val args by navArgs<BillingFragmentArgs>() // to get the price from val action created in cart fragment
     private var productsArgs = emptyList<CartProducts>()
     private var totalPrice = 0f
+
+    private var selectedAddress: Address? = null
+    private val orderViewModel by viewModels<OrderViewModel>()
 
 
     override fun onCreateView(
@@ -62,7 +71,7 @@ class BillingFragment: Fragment() {
         }
 
         lifecycleScope.launchWhenStarted {
-            viewModel.address.collectLatest {
+            billingViewModel.address.collectLatest {
                 when (it){
                     is Resource.Loading -> {
                         binding.progressbarAddress.visibility = View.VISIBLE
@@ -79,9 +88,65 @@ class BillingFragment: Fragment() {
                 }
             }
         }
+
+        lifecycleScope.launchWhenStarted {
+            orderViewModel.order.collectLatest {
+                when (it){
+                    is Resource.Loading -> {
+                        binding.buttonPlaceOrder.startAnimation()
+                    }
+                    is Resource.Success -> {
+                        binding.buttonPlaceOrder.revertAnimation()
+                        findNavController().navigateUp()
+                        Snackbar.make(requireView(), "Your order has been placed", Snackbar.LENGTH_SHORT).show()
+                    }
+                    is Resource.Error -> {
+                        binding.buttonPlaceOrder.revertAnimation()
+                        Toast.makeText(requireContext(), it.message.toString(), Toast.LENGTH_SHORT).show()
+                    }
+                    else -> Unit
+                }
+            }
+        }
+
         billingProductsAdapter.differ.submitList(productsArgs)
 
         binding.tvTotalPrice.text = "₦ $totalPrice"
+
+        addressAdapter.onClick = {
+            selectedAddress = it        // to update our selected address
+        }
+
+        binding.buttonPlaceOrder.setOnClickListener {
+            if (selectedAddress == null){
+                Toast.makeText(requireContext(), "Please select an address", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            showOrderConfirmationDialog()
+        }
+    }
+
+    private fun showOrderConfirmationDialog() {
+        val alertDialog = AlertDialog.Builder(requireContext()).apply {
+            setTitle("Order items")
+            setMessage("Do you want to order items in your cart?")
+                .setNegativeButton("No"){
+                        dialog, _  -> dialog.dismiss()
+                }
+                .setPositiveButton("Yes"){
+                        dialog, _ ->
+                    val order = Order(
+                        OrderStatus.Ordered.orderStatus,
+                        totalPrice,
+                        productsArgs,
+                        selectedAddress!!
+                    )
+                    orderViewModel.placeOrder(order)
+                    dialog.dismiss()
+                }
+        }
+        alertDialog.create()
+        alertDialog.show()
     }
 
     private fun setUpAddressRecyclerView() {
