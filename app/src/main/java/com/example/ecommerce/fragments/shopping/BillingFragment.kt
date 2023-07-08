@@ -37,7 +37,7 @@ class BillingFragment: Fragment() {
     private val billingViewModel by viewModels<BillingViewModel>()
     private  val args by navArgs<BillingFragmentArgs>() // to get the price from val action created in cart fragment
     private var productsArgs = emptyList<CartProducts>()
-    private var totalPrice = 0f
+    private var totalPricee = 0f
 
     private var selectedAddress: Address? = null
     private val orderViewModel by viewModels<OrderViewModel>()
@@ -56,7 +56,7 @@ class BillingFragment: Fragment() {
         super.onCreate(savedInstanceState)
 
         productsArgs = args.products.toList()
-        totalPrice = args.totalPrice
+        totalPricee = args.totalPrice.toFloat()
 
     }
 
@@ -65,6 +65,16 @@ class BillingFragment: Fragment() {
 
         setUpBillingProductsRecyclerView()
         setUpAddressRecyclerView()
+
+        // if we don't have an order we don't want to show these
+        if (!args.payment){
+            binding.apply {
+                buttonPlaceOrder.visibility = View.INVISIBLE
+                totalBoxContainer.visibility = View.INVISIBLE
+                middleLine.visibility = View.INVISIBLE
+                bottomLine.visibility = View.INVISIBLE
+            }
+        }
 
         binding.imageAddAddress.setOnClickListener {
             findNavController().navigate(R.id.action_billingFragment_to_addressFragment)
@@ -111,10 +121,24 @@ class BillingFragment: Fragment() {
 
         billingProductsAdapter.differ.submitList(productsArgs)
 
-        binding.tvTotalPrice.text = "₦ $totalPrice"
+        binding.tvTotalPrice.text = "₦ $totalPricee"
+
 
         addressAdapter.onClick = {
             selectedAddress = it        // to update our selected address
+
+            // here if we are in the profile fragment when we click address we want to be able to
+            // edit it, but when we are in checkout we don't want to show address fragment
+            if (!args.payment) {
+                val bundle = Bundle().apply {
+                    putParcelable("address", selectedAddress)
+                }
+                findNavController().navigate(R.id.action_billingFragment_to_addressFragment, bundle)
+            }
+        }
+
+        binding.imageCloseBilling.setOnClickListener {
+            findNavController().navigateUp()
         }
 
         binding.buttonPlaceOrder.setOnClickListener {
@@ -137,7 +161,7 @@ class BillingFragment: Fragment() {
                         dialog, _ ->
                     val order = Order(
                         OrderStatus.Ordered.orderStatus,
-                        totalPrice,
+                        totalPricee,
                         productsArgs,
                         selectedAddress!!
                     )

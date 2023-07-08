@@ -83,4 +83,5 @@ class CartProductsOrItemsAdapter: RecyclerView.Adapter<CartProductsOrItemsAdapte
     var onPlusClick: ((CartProducts) -> Unit)? = null
     var onMinusClick: ((CartProducts) -> Unit)? = null
 
+
 }

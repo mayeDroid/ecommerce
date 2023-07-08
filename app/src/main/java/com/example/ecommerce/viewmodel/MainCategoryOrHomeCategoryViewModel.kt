@@ -82,13 +82,14 @@ class MainCategoryOrHomeCategoryViewModel @Inject constructor(private var firest
             // firestore.collection("Products").limit(pagingInfo.bestProductPaging * 2)
 
             firestore.collection("Products").whereEqualTo("category", "Samsung")
-                .orderBy("id", Query.Direction.ASCENDING).limit(pagingInfo.bestProductPaging * 2)
+                .orderBy("id", Query.Direction.ASCENDING).limit(pagingInfo.bestProductPaging * 4)
                 .get()
 
-/*                since we want to display all the products,
-                .limit means we only want to fetch only 3 products when we launch the app, to dynamically fix this,
-                we use a method called paging as seen in paging info internal data class
-                to load all images once just remove the limit function*/
+                /*  since we want to display all the products,
+                   .limit means we only want to fetch only 3 products when we launch the app, to dynamically fix this,
+                   we use a method called paging as seen in paging info internal data class
+                   to load all images once just remove the limit function
+                   */
 
                 .addOnSuccessListener { result ->
                     val bestProductsList = result.toObjects(Product::class.java)
@@ -108,7 +109,7 @@ class MainCategoryOrHomeCategoryViewModel @Inject constructor(private var firest
     }
 }
 
-//helps with paging so when paging ends we don't want to keep updating firebase anymore when we scroll down and come up again due to the cost as we pay per page
+//helps with paging so when paging ends we don't want to keep updating firebase anymore when we scroll up and down due to the cost as we pay for paging
 internal data class PagingInfo(
     var bestProductPaging: Long = 1, // if we put 2 it will multiple 2 by the 3 then load 6 images
     var oldBestProductPaging: List<Product> = emptyList(),

@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,16 +15,21 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.ecommerce.R
 import com.example.ecommerce.adapters.CartProductsOrItemsAdapter
 import com.example.ecommerce.databinding.FragmentCartBinding
+import com.example.ecommerce.dataclasses.CartProducts
 import com.example.ecommerce.firebase.FirebaseCommonOrAddToAndUpdateCart
 import com.example.ecommerce.utilities.Resource
 import com.example.ecommerce.utilities.VerticalItemDecoration
 import com.example.ecommerce.viewmodel.CartViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 
+@AndroidEntryPoint
 class CartFragment: Fragment(R.layout.fragment_cart) {
     private lateinit var binding: FragmentCartBinding
     private val cartAdapter by lazy { CartProductsOrItemsAdapter() }
-    private val viewModel by activityViewModels<CartViewModel>()
+    private val viewModel by viewModels<CartViewModel>()
+
+    val cartProducts = CartProducts()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,15 +43,35 @@ class CartFragment: Fragment(R.layout.fragment_cart) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        var totalPrice = 0f
+        var totalPrice = 1f
 
         setUpCartRV()
+
+       /* lifecycleScope.launchWhenStarted {
+            viewModel.deleteDialogOrIndicatorForDeleteCartItems.collectLatest {
+                val alertDialog = AlertDialog.Builder(requireContext()).apply {
+                    setTitle("Delete item from cart")
+                    setMessage("Do you want to delete this item from your cart?")
+                        .setNegativeButton("No"){
+                                dialog, _  -> dialog.dismiss()
+                            viewModel.deleteCartProduct(it)
+                        }
+                        .setPositiveButton("Yes"){
+                                dialog, _ ->
+                            dialog.dismiss()
+
+                        }
+                }
+                alertDialog.create()
+                alertDialog.show()
+            }
+        }*/
 
         lifecycleScope.launchWhenStarted {
             viewModel.productsPrice.collectLatest { price ->
                 price?.let {
-                    var totalPrice = it
                     binding.tvTotalPrice.text = "₦ $price"
+                    totalPrice = "$price".toFloat()
                 }
             }
         }
@@ -59,35 +84,24 @@ class CartFragment: Fragment(R.layout.fragment_cart) {
 
         cartAdapter.onPlusClick = {
             viewModel.changeQuantity(it, FirebaseCommonOrAddToAndUpdateCart.QuantityChanging.INCREASE)
+
+        }
+
+        binding.imageCloseCart.setOnClickListener {
+            findNavController().navigateUp()
         }
 
         cartAdapter.onMinusClick = {
             viewModel.changeQuantity(it, FirebaseCommonOrAddToAndUpdateCart.QuantityChanging.DECREASE)
+
+
         }
 
         binding.buttonCheckOut.setOnClickListener {
-            val action = CartFragmentDirections.actionCartFragmentToBillingFragment(totalPrice, cartAdapter.differ.currentList.toTypedArray())
+            val action = CartFragmentDirections.actionCartFragmentToBillingFragment(totalPrice, cartAdapter.differ.currentList.toTypedArray(), true)
             findNavController().navigate(action)
         //findNavController().navigate(R.id.action_cartFragment_to_billingFragment)
-        }
 
-        lifecycleScope.launchWhenStarted {
-            viewModel.deleteDialogOrIndicatorForDeleteCartItems.collectLatest {
-                val alertDialog = AlertDialog.Builder(requireContext()).apply {
-                    setTitle("Delete item from cart")
-                    setMessage("Do you want to delete this item from your cart?")
-                        .setNegativeButton("No"){
-                            dialog, _  -> dialog.dismiss()
-                        }
-                        .setPositiveButton("Yes"){
-                            dialog, _ ->
-                            viewModel.deleteCartProduct(it)
-                            dialog.dismiss()
-                        }
-                }
-                alertDialog.create()
-                alertDialog.show()
-            }
         }
 
         lifecycleScope.launchWhenStarted {
@@ -95,6 +109,7 @@ class CartFragment: Fragment(R.layout.fragment_cart) {
                 when (it){
                     is  Resource.Loading -> {
                         binding.progressBarCart.visibility = View.VISIBLE
+
                     }
                     is Resource.Success -> {
                         binding.progressBarCart.visibility = View.INVISIBLE
@@ -115,7 +130,6 @@ class CartFragment: Fragment(R.layout.fragment_cart) {
             }
         }
 
-
     }
 
     private fun showOtherViews() {
@@ -130,7 +144,7 @@ class CartFragment: Fragment(R.layout.fragment_cart) {
         binding.apply {
             rvCart.visibility = View.GONE
             tvTotalBoxContainer.visibility = View.GONE
-            buttonCheckOut.visibility = View.GONE
+            buttonCheckOut.isEnabled = false
         }
     }
 
@@ -146,6 +160,8 @@ class CartFragment: Fragment(R.layout.fragment_cart) {
         }
     }
 
+
+
     // this adds space between items in the recycler
     private fun setUpCartRV() {
         binding.rvCart.apply {
@@ -154,4 +170,6 @@ class CartFragment: Fragment(R.layout.fragment_cart) {
             addItemDecoration(VerticalItemDecoration())
         }
     }
+
 }
+

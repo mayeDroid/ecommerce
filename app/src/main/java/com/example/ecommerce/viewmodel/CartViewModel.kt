@@ -8,6 +8,7 @@ import com.example.ecommerce.utilities.Resource
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -27,6 +28,8 @@ class CartViewModel @Inject constructor(
 
     private var cartProductsDocument = emptyList<DocumentSnapshot>()
 
+
+
     val productsPrice = cartProductsss.map {
         when (it){
             is Resource.Success -> {
@@ -36,13 +39,14 @@ class CartViewModel @Inject constructor(
         }
     }
 
-    // to delete the items from the cart
+
     fun deleteCartProduct(cartProducts: CartProducts) {
-        val index = cartProductsss.value.data?.indexOf(cartProducts)
-        if (index != null && index != -1){
-            val documentId = cartProductsDocument[index].id
-            firestore.collection("users").document(auth.uid!!).collection("cart").document(documentId).delete()
-        }
+            val index = cartProductsss.value.data?.indexOf(cartProducts)
+            if (index != null && index != -1) {
+                val documentId = cartProductsDocument[index].id
+                firestore.collection("users").document(auth.uid!!).collection("cart")
+                    .document(documentId).delete()
+            }
     }
 
     private fun calculatePrice(data: List<CartProducts>): Float {
@@ -91,13 +95,16 @@ class CartViewModel @Inject constructor(
                     viewModelScope.launch { _cartProducts.emit(Resource.Loading()) }
                     increaseQuantity(documentId)
                 }
-                FirebaseCommonOrAddToAndUpdateCart.QuantityChanging.DECREASE -> {
-                    if(cartProducts.quantity == 1) {    // here we want to take care of getting 0 when we use the minus button
-                        viewModelScope.launch {
-                            _deleteDialogOrIndicatorForDeleteCartItems.emit(CartProducts())
-                        }
+                FirebaseCommonOrAddToAndUpdateCart.QuantityChanging.DECREASE-> {
+                    if(cartProducts.quantity == 1) {
+                       // here we want to take care of getting 0 when we use the minus button
+                        deleteCartProduct(cartProducts)
+                        viewModelScope.launch { _deleteDialogOrIndicatorForDeleteCartItems.emit(cartProducts)
+                       }
+
                     }
-                    viewModelScope.launch { _cartProducts.emit(Resource.Loading())}
+                    viewModelScope.launch {
+                        _cartProducts.emit(Resource.Loading())}
                     decreaseQuantity(documentId)
                 }
             }
@@ -119,4 +126,9 @@ class CartViewModel @Inject constructor(
             }
         }
     }
+
+    fun del(cartProducts: CartProducts){
+
+    }
+
 }

@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.example.ecommerce.databinding.FragmentAddressBinding
 import com.example.ecommerce.dataclasses.Address
 import com.example.ecommerce.utilities.Resource
@@ -21,6 +22,8 @@ class AddressFragment: Fragment() {
     private lateinit var binding: FragmentAddressBinding
 
     val viewModel  by viewModels<AddressViewModel>()
+
+    val args by navArgs<AddressFragmentArgs>()
 
     // we decided to use the life cycle scope on onCreate this time
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,6 +66,26 @@ class AddressFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val address = args.address
+        if (address == null){
+            binding.buttonDelelte.visibility = View.GONE
+        }
+        else{
+            binding.apply {
+                edAddressTitle.setText(address.addressTitle)
+                edFullName.setText(address.fullName)
+                edCity.setText(address.city)
+                edPhone.setText(address.phone)
+                edState.setText(address.state)
+                edStreet.setText(address.street)
+
+            }
+        }
+
+        binding.imageAddressClose.setOnClickListener {
+            findNavController().navigateUp()
+        }
 
         binding.apply {
             buttonSave.setOnClickListener {
