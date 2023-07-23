@@ -98,7 +98,7 @@ class CartViewModel @Inject constructor(
                 FirebaseCommonOrAddToAndUpdateCart.QuantityChanging.DECREASE-> {
                     if(cartProducts.quantity == 1) {
                        // here we want to take care of getting 0 when we use the minus button
-                        deleteCartProduct(cartProducts)
+                        // deleteCartProduct(cartProducts)
                         viewModelScope.launch { _deleteDialogOrIndicatorForDeleteCartItems.emit(cartProducts)
                        }
 

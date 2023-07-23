@@ -82,7 +82,7 @@ class MainCategoryOrHomeCategoryViewModel @Inject constructor(private var firest
             // firestore.collection("Products").limit(pagingInfo.bestProductPaging * 2)
 
             firestore.collection("Products").whereEqualTo("category", "Samsung")
-                .orderBy("id", Query.Direction.ASCENDING).limit(pagingInfo.bestProductPaging * 4)
+                .orderBy("id", Query.Direction.ASCENDING).limit(pagingInfo.bestProductPaging * 2)
                 .get()
 
                 /*  since we want to display all the products,

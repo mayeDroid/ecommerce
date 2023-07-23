@@ -29,8 +29,6 @@ class CartFragment: Fragment(R.layout.fragment_cart) {
     private val cartAdapter by lazy { CartProductsOrItemsAdapter() }
     private val viewModel by viewModels<CartViewModel>()
 
-    val cartProducts = CartProducts()
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -47,7 +45,7 @@ class CartFragment: Fragment(R.layout.fragment_cart) {
 
         setUpCartRV()
 
-       /* lifecycleScope.launchWhenStarted {
+       lifecycleScope.launchWhenStarted {
             viewModel.deleteDialogOrIndicatorForDeleteCartItems.collectLatest {
                 val alertDialog = AlertDialog.Builder(requireContext()).apply {
                     setTitle("Delete item from cart")
@@ -65,7 +63,7 @@ class CartFragment: Fragment(R.layout.fragment_cart) {
                 alertDialog.create()
                 alertDialog.show()
             }
-        }*/
+        }
 
         lifecycleScope.launchWhenStarted {
             viewModel.productsPrice.collectLatest { price ->
